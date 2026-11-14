@@ -4,6 +4,7 @@
 ![Java 17](https://img.shields.io/badge/Java-17-blue?logo=openjdk)
 ![Spring Boot 3.5.16](https://img.shields.io/badge/Spring%20Boot-3.5.16-brightgreen?logo=springboot)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tirth6851/auth-service-java/badge)](https://securityscorecards.dev/viewer/?uri=github.com/tirth6851/auth-service-java)
 
 A small, readable, self-hostable authentication service built with Spring Boot 3.5 and Java 17:
 email and password signup and login, short-lived JWT access tokens, rotating refresh tokens with reuse

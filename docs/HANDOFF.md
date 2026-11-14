@@ -1,7 +1,7 @@
 # Session Handoff
 
-**Last updated**: 2026-11-10 (Open-source launch prep done, then **Spring Boot 3.5.16 upgrade merged via PR #37**)
-**Branch**: `main` at `14aa202` (PR #37 merge `5b23bed` plus one docs commit), in sync with `origin/main`, clean working tree. No other branches matter. `Java auth open source growth.md` is the user's private research note, **untracked on purpose — never stage it**.
+**Last updated**: 2026-11-14 (PR #38 HikariCP prod pool merged from a contributor; OpenSSF Scorecard badge added; stale Dependabot PRs #33/#34 closed; rebases requested for #23 and #36)
+**Branch**: `main` at `6bba793` (PR #38 merge; includes the earlier PR #37 Spring Boot 3.5.16 upgrade), in sync with `origin/main`. Working tree has the Scorecard badge in `README.md` plus this doc update, uncommitted at time of writing. No other branches matter. `Java auth open source growth.md` is the user's private research note, **untracked on purpose — never stage it**.
 **Tests**: **72 backend tests pass on Boot 3.5.16** (`mvn clean test`, IntelliJ Maven + JBR 21), and the **3 Docker-gated Postgres tests now run in CI on every PR** (`Postgres Integration` job, a required check); they passed against real PostgreSQL 16 with Flyway 11.7.2 and `ddl-auto=validate` for the first time ever. Frontend: still no automated test suite (CI lint + builds it).
 **Current goal**: turn the project into a healthy open-source project (`docs/OPEN_SOURCE_LAUNCH.md`). Repo files, GitHub settings, branch protection, starter issues, CI, and the Spring Boot upgrade are done. Remaining: the other Dependabot PRs, PR #14, badges, the niche comparison, and the launch itself.
 
