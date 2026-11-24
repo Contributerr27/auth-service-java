@@ -207,6 +207,10 @@ These are real gaps, not hidden features:
 
 Planned and candidate work is tracked in [`docs/PROJECT_BACKLOG.md`](docs/PROJECT_BACKLOG.md).
 
+## API collection
+
+A ready-made [Bruno collection](docs/api-collection/README.md) covers signup, login, refresh, logout and `GET /auth/me`, with tokens chained between requests and the base URL as a variable.
+
 ## Contributing
 
 Contributions are welcome, including docs and tests. Start with [CONTRIBUTING.md](CONTRIBUTING.md): it
