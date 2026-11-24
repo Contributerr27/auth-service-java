@@ -45,4 +45,5 @@ npm run dev      # start dev server on :3000
 npm run build     # production build (also type-checks)
 npm run start     # run the production build
 npm run lint      # eslint
+npm test          # unit tests for lib/ (vitest)
 ```
