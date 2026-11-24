@@ -1,0 +1,38 @@
+meta {
+  name: Refresh
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/refresh
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refreshToken": "{{refreshToken}}"
+  }
+}
+
+script:post-response {
+  if (res.status === 200) {
+    bru.setVar("accessToken", res.body.token);
+    bru.setVar("refreshToken", res.body.refreshToken);
+  }
+}
+
+tests {
+  test("refresh rotates the token pair", function () {
+    expect(res.status).to.equal(200);
+    expect(res.body.token).to.be.a("string");
+    expect(res.body.refreshToken).to.be.a("string");
+  });
+}
+
+docs {
+  Exchanges the saved refresh token for a new pair. The submitted refresh
+  token is revoked, so the new one is saved over it. Sending the old one again
+  returns 401.
+}
