@@ -50,7 +50,7 @@ com.authplatform
 ## Security Model
 
 **Filter chain (per request):**
-1. `JwtAuthenticationFilter` (before `UsernamePasswordAuthenticationFilter`) extracts `Authorization: Bearer <token>`, validates via `JwtUtil`, sets `UsernamePasswordAuthenticationToken` in `SecurityContext` with email as principal.
+1. `JwtAuthenticationFilter` (before `UsernamePasswordAuthenticationFilter`) extracts `Authorization: Bearer <token>`, validates via `JwtUtil`, sets `UsernamePasswordAuthenticationToken` in `SecurityContext` with an `AuthenticatedUser` (`userId`, `email`) as principal.
 2. Spring Security checks `authorizeHttpRequests` rules.
 3. Unauthenticated access → `Http401UnauthorizedEntryPoint` → **401 Unauthorized**.
 4. Future role checks → 403 Forbidden (not yet implemented).
