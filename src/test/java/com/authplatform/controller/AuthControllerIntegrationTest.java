@@ -1,6 +1,8 @@
 package com.authplatform.controller;
 
+import com.authplatform.model.User;
 import com.authplatform.repository.RefreshTokenRepository;
+import com.authplatform.repository.UserRepository;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,8 +27,34 @@ class AuthControllerIntegrationTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired RefreshTokenRepository refreshTokenRepository;
+    @Autowired UserRepository userRepository;
 
     // --- Signup / Login ---
+
+    @Test
+    void signup_storesBcryptHash_notPlaintext() throws Exception {
+        String password = "pass1234";
+        mockMvc.perform(post("/auth/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {"email":"hashcheck@example.com","password":"pass1234"}
+                    """))
+                .andExpect(status().isOk());
+
+        User stored = userRepository.findByEmail("hashcheck@example.com").orElseThrow();
+        assertThat(stored.getPasswordHash())
+                .as("stored value should be a BCrypt hash ($2a$/$2b$), not plaintext")
+                .matches("^\\$2[ab]\\$.*")
+                .doesNotContain(password);
+
+        mockMvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {"email":"hashcheck@example.com","password":"pass1234"}
+                    """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").isNotEmpty());
+    }
 
     @Test
     void signup_returns200AndToken() throws Exception {
