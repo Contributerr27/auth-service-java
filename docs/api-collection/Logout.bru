@@ -1,0 +1,28 @@
+meta {
+  name: Logout
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/logout
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refreshToken": "{{refreshToken}}"
+  }
+}
+
+tests {
+  test("logout revokes the refresh token", function () {
+    expect(res.status).to.equal(204);
+  });
+}
+
+docs {
+  Revokes the saved refresh token. The access token is not revoked and expires
+  on its own (default 1 hour), so discard it on the client.
+}
