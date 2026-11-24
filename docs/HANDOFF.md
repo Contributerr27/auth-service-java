@@ -1,9 +1,18 @@
 # Session Handoff
 
-**Last updated**: 2026-11-14 (PR #38 HikariCP prod pool merged from a contributor; OpenSSF Scorecard badge added; stale Dependabot PRs #33/#34 closed; rebases requested for #23 and #36)
-**Branch**: `main` at `6bba793` (PR #38 merge; includes the earlier PR #37 Spring Boot 3.5.16 upgrade), in sync with `origin/main`. Working tree has the Scorecard badge in `README.md` plus this doc update, uncommitted at time of writing. No other branches matter. `Java auth open source growth.md` is the user's private research note, **untracked on purpose — never stage it**.
-**Tests**: **72 backend tests pass on Boot 3.5.16** (`mvn clean test`, IntelliJ Maven + JBR 21), and the **3 Docker-gated Postgres tests now run in CI on every PR** (`Postgres Integration` job, a required check); they passed against real PostgreSQL 16 with Flyway 11.7.2 and `ddl-auto=validate` for the first time ever. Frontend: still no automated test suite (CI lint + builds it).
-**Current goal**: turn the project into a healthy open-source project (`docs/OPEN_SOURCE_LAUNCH.md`). Repo files, GitHub settings, branch protection, starter issues, CI, and the Spring Boot upgrade are done. Remaining: the other Dependabot PRs, PR #14, badges, the niche comparison, and the launch itself.
+**Last updated**: 2026-11-24 (first outside-contributor PRs merged: #42 BCrypt-hash test for #26, #43 D-009 doc fix for #29; Dependabot PRs #23 and #36 merged earlier; PR #38 HikariCP merged)
+**Branch**: `main` at `14cdae9` (PR #43 merge), in sync with `origin/main`. `Java auth open source growth.md` is the user's private research note, **untracked on purpose, never stage it**.
+**Tests**: **73 backend tests pass** (72 plus the new BCrypt-hash test from PR #42; run locally on the PR #42 commit with `mvn test`, and CI is green on #42 and #43), and the 3 Docker-gated Postgres tests run in CI on every PR (`Postgres Integration`, a required check). Frontend: still no automated test suite (CI lints and builds it).
+**Current goal**: turn the project into a healthy open-source project (`docs/OPEN_SOURCE_LAUNCH.md`). Repo files, GitHub settings, branch protection, starter issues, CI, the Spring Boot upgrade, and the first two outside-contributor PRs are done. Remaining: PR #14, the Best Practices badge, the niche comparison, and the launch itself.
+
+---
+
+## Session 2026-11-24 (new contributor, authoritative)
+
+- **Contributor `Contributerr27`** (first outside contributor to land a PR) took starter issue #26 and then #29. **PR #42** (`signup_storesBcryptHash_notPlaintext`, test only) merged as `be7446a` after I ran the full suite on the PR commit (73 pass) and all 7 required checks passed. **PR #43** (D-009 marked superseded by the `AuthenticatedUser` principal; `PROJECT_CONTEXT.md` and `spec.md` corrected) merged as `14cdae9`; I checked its claims against `JwtAuthenticationFilter` (line 43) and `AuthController` (line 128), and all 7 checks passed. Both PRs carried DCO sign-offs and AI disclosures. This was the first real exercise of the DCO check on an outside contributor, and first-time contributors' workflows needed a manual "Approve and run".
+- **Maintainer actions taken:** thank-you comment on PR #42 and on issue #29, assigned #29 to the contributor, suggested a topic branch (they used one for #43).
+- **Drift fixed:** the previous handoff named `main` as `6bba793` and listed #36 and #23 as open; both were merged on 2026-11-14.
+- **Closed items:** starter issues #26 and #29 are done (D-009 is no longer stale; the older "stale D-009" mentions below are history). Open starter issues: #28, #30, #31, #32.
 
 ---
 
@@ -19,9 +28,9 @@
 
 **Known gaps (do NOT invent):** no password reset, email verification, sessions/devices API, RBAC, audit logging, token revocation, or shared (Redis) rate limiting; portal has no runtime tests; rate limiting keys on `getRemoteAddr()` (all clients share a bucket behind a proxy).
 
-**Open risks / deferred:** remaining Dependabot PRs (#36, #23, #33, #34) and PR #14 (unexplained) await the user; Docker Compose quick start and Dockerfile build image never exercised on Boot 3.5; Render services never provisioned; redundant `git stash` (`stash@{0}`) still present, the user can drop it; Scorecard/Best Practices badges, niche comparison (Keycloak, Authelia, Ory Kratos, Spring Authorization Server, SuperTokens), and launch posts not done.
+**Open risks / deferred:** PR #14 (unexplained scoped-API-keys draft) awaits the user; Docker Compose quick start and Dockerfile build image never exercised on Boot 3.5 (issue #30 is open for a contributor); Render services never provisioned; Best Practices badge, niche comparison (Keycloak, Authelia, Ory Kratos, Spring Authorization Server, SuperTokens), and launch posts not done.
 
-**Exact next step:** ask the user what PR #14 is, then decide on the Dependabot PRs. After that: badges, niche comparison, launch.
+**Exact next step:** watch for the contributor's next issue pick (#28, #30, #31 are open; #29 and #26 are done) and assign it. Ask the user what PR #14 is. After that: Best Practices badge, niche comparison, launch.
 
 ---
 
@@ -264,7 +273,7 @@ This session's job was reconciliation, not new features: merged PR #10 (refresh 
 
 ## 🔖 New Session Prompt (ready to paste)
 
-> Continue the Java Auth Service project (open-source launch). Work from `main` (`14aa202` or later); there
+> Continue the Java Auth Service project (open-source launch). Work from `main` (`14cdae9` or later); there
 > is no long-lived feature branch. This is the authoritative starting state; do not re-derive it.
 >
 > **Read first, in order:** `CLAUDE.md`, this `docs/HANDOFF.md`'s top section (everything below the
@@ -292,8 +301,5 @@ This session's job was reconciliation, not new features: merged PR #10 (refresh 
 > 8.10; the Docker Compose quick start and the Dockerfile build image were never exercised on Boot 3.5; the
 > web portal has no runtime tests (CI only lints and builds it); the Render services were never provisioned.
 >
-> **What to do next:** (1) Ask the user about the remaining open Dependabot PRs: #36 (GitHub Actions group, 4
-> updates), #23 (13 npm minor/patch bumps), #33/#34 (lockfile-only patches), and PR #14. Dependabot will
-> re-propose other Maven updates (for example Bucket4j) against the new baseline. (2) Remaining launch work:
-> Scorecard and Best Practices badges, the niche comparison, then the launch posts. Run `/handoff` before
+> **What to do next:** (1) Watch for the contributor `Contributerr27`'s next pick (#28, #30, #31 are open; #26 and #29 are merged) and assign it. Ask the user about PR #14. Dependabot will re-propose Maven updates (for example Bucket4j); do not merge them without discussion. (2) Remaining launch work: Best Practices badge, the niche comparison, then the launch posts. Run `/handoff` before
 > stopping.
