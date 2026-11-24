@@ -89,11 +89,13 @@ Record of every significant architectural or engineering decision made during de
 
 ## D-009 — SecurityContext Principal = Email String (not UserDetails)
 
+**Status:** Superseded. The principal is now an `AuthenticatedUser` record (`userId`, `email`), not the email string. `JwtAuthenticationFilter` builds it from the JWT subject (user id, per [ADR-001](ADR/001-jwt-subject-is-userid.md)) and the `email` claim, and `AuthController` casts `getPrincipal()` to `AuthenticatedUser` for `GET /auth/me`. Still no `UserDetails` and no DB hit per request. The original decision is kept below for history.
+
 **Date:** 2026-04
 **Decision:** `JwtAuthenticationFilter` sets `UsernamePasswordAuthenticationToken` with the email string as principal, not a `UserDetails` object.
 **Reason:** Phase 1 has no role-based authorization; loading a full `UserDetails` per request would require a DB hit for no benefit.
 **Alternatives considered:** Implement `UserDetailsService` — standard Spring Security approach but adds unnecessary complexity and a DB query per request.
-**Consequences:** Code calling `SecurityContextHolder.getContext().getAuthentication().getPrincipal()` gets a `String` (email), not a `UserDetails`. When roles are added, this decision should be revisited.
+**Consequences (original, now superseded):** Code calling `SecurityContextHolder.getContext().getAuthentication().getPrincipal()` gets a `String` (email), not a `UserDetails`. When roles are added, this decision should be revisited.
 
 ---
 
