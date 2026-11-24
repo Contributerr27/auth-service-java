@@ -1,9 +1,9 @@
 # Session Handoff
 
-**Last updated**: 2026-11-24 (first outside-contributor PRs merged: #42 BCrypt-hash test for #26, #43 D-009 doc fix for #29; Dependabot PRs #23 and #36 merged earlier; PR #38 HikariCP merged)
-**Branch**: `main` at `14cdae9` (PR #43 merge), in sync with `origin/main`. `Java auth open source growth.md` is the user's private research note, **untracked on purpose, never stage it**.
-**Tests**: **73 backend tests pass** (72 plus the new BCrypt-hash test from PR #42; run locally on the PR #42 commit with `mvn test`, and CI is green on #42 and #43), and the 3 Docker-gated Postgres tests run in CI on every PR (`Postgres Integration`, a required check). Frontend: still no automated test suite (CI lints and builds it).
-**Current goal**: turn the project into a healthy open-source project (`docs/OPEN_SOURCE_LAUNCH.md`). Repo files, GitHub settings, branch protection, starter issues, CI, the Spring Boot upgrade, and the first two outside-contributor PRs are done. Remaining: PR #14, the Best Practices badge, the niche comparison, and the launch itself.
+**Last updated**: 2026-11-24 (four outside-contributor PRs merged in one day from `Contributerr27`: #42, #43, #45, #46; closes starter issues #26, #28, #29, #31)
+**Branch**: `main` at `a20dd66` (PR #45 merge), in sync with `origin/main`. `Java auth open source growth.md` is the user's private research note, **untracked on purpose, never stage it**.
+**Tests**: **73 backend tests pass** (`mvn test`, verified on the PR #42 commit; no Java code changed since) plus **21 new web tests** (`cd web && npm test`, Vitest 4, run locally on PR #46: 21 pass, lint clean, build ok, `npm audit` 0). The 3 Docker-gated Postgres tests run in CI on every PR. CI now has a `Test` step in the `Web Build` job. The web portal still has no end-to-end tests.
+**Current goal**: turn the project into a healthy open-source project (`docs/OPEN_SOURCE_LAUNCH.md`). Repo files, GitHub settings, branch protection, starter issues, CI, the Spring Boot upgrade, and four outside-contributor PRs are done. Remaining: PR #14, the Best Practices badge, the niche comparison, and the launch itself.
 
 ---
 
@@ -12,7 +12,9 @@
 - **Contributor `Contributerr27`** (first outside contributor to land a PR) took starter issue #26 and then #29. **PR #42** (`signup_storesBcryptHash_notPlaintext`, test only) merged as `be7446a` after I ran the full suite on the PR commit (73 pass) and all 7 required checks passed. **PR #43** (D-009 marked superseded by the `AuthenticatedUser` principal; `PROJECT_CONTEXT.md` and `spec.md` corrected) merged as `14cdae9`; I checked its claims against `JwtAuthenticationFilter` (line 43) and `AuthController` (line 128), and all 7 checks passed. Both PRs carried DCO sign-offs and AI disclosures. This was the first real exercise of the DCO check on an outside contributor, and first-time contributors' workflows needed a manual "Approve and run".
 - **Maintainer actions taken:** thank-you comment on PR #42 and on issue #29, assigned #29 to the contributor, suggested a topic branch (they used one for #43).
 - **Drift fixed:** the previous handoff named `main` as `6bba793` and listed #36 and #23 as open; both were merged on 2026-11-14.
-- **Closed items:** starter issues #26 and #29 are done (D-009 is no longer stale; the older "stale D-009" mentions below are history). Open starter issues: #28, #30, #31, #32.
+- **Later the same day, two more PRs merged:** **PR #45** (Bruno API collection in `docs/api-collection/`, closes #28, merged as `a20dd66`) and **PR #46** (Vitest + 21 tests for `web/lib/` helpers, plus a CI `Test` step, closes #31, merged as `3e35a74`). The contributor could only test #45 against a mock and asked for a real run; I ran `bru run --env local` against the real app (dev profile) and all 5 requests and tests passed, and the fields match the code. For #46 I ran `npm ci`, `npm test`, lint, build and `npm audit` locally. Secret scans of both were clean (only a throwaway demo password in `local.bru`). Thank-you comments posted on #42, #43, #45, #46; #29 and #28 assigned.
+- **Closed items:** starter issues #26, #28, #29, #31 are done (D-009 is no longer stale; the older "stale D-009" mentions below are history). Open starter issues: #30 and #32 only.
+- **Tip for reviewing contributor PRs from this environment:** `git fetch origin pull/N/head:prN`, use a worktree, `mvn test` for Java, and `npm i @usebruno/cli` in a scratch dir to run the collection; GitHub holds first-time contributors' workflows until a maintainer taps Approve and run.
 
 ---
 
@@ -28,9 +30,9 @@
 
 **Known gaps (do NOT invent):** no password reset, email verification, sessions/devices API, RBAC, audit logging, token revocation, or shared (Redis) rate limiting; portal has no runtime tests; rate limiting keys on `getRemoteAddr()` (all clients share a bucket behind a proxy).
 
-**Open risks / deferred:** PR #14 (unexplained scoped-API-keys draft) awaits the user; Docker Compose quick start and Dockerfile build image never exercised on Boot 3.5 (issue #30 is open for a contributor); Render services never provisioned; Best Practices badge, niche comparison (Keycloak, Authelia, Ory Kratos, Spring Authorization Server, SuperTokens), and launch posts not done.
+**Open risks / deferred:** PR #14 (unexplained scoped-API-keys draft) awaits the user; Docker Compose quick start and Dockerfile build image never exercised on Boot 3.5 (starter issue #30 is open); rate limiting behind a reverse proxy (starter issue #32, needs an ADR first); Render services never provisioned; Best Practices badge, niche comparison (Keycloak, Authelia, Ory Kratos, Spring Authorization Server, SuperTokens), and launch posts not done.
 
-**Exact next step:** watch for the contributor's next issue pick (#28, #30, #31 are open; #29 and #26 are done) and assign it. Ask the user what PR #14 is. After that: Best Practices badge, niche comparison, launch.
+**Exact next step:** watch for the contributor's next issue pick (only #30 and #32 remain open; #32 needs an ADR, so consider writing a few more good-first-issues) and assign it. Ask the user what PR #14 is. After that: Best Practices badge, niche comparison, launch.
 
 ---
 
@@ -273,7 +275,7 @@ This session's job was reconciliation, not new features: merged PR #10 (refresh 
 
 ## 🔖 New Session Prompt (ready to paste)
 
-> Continue the Java Auth Service project (open-source launch). Work from `main` (`14cdae9` or later); there
+> Continue the Java Auth Service project (open-source launch). Work from `main` (`a20dd66` or later); there
 > is no long-lived feature branch. This is the authoritative starting state; do not re-derive it.
 >
 > **Read first, in order:** `CLAUDE.md`, this `docs/HANDOFF.md`'s top section (everything below the
@@ -301,5 +303,5 @@ This session's job was reconciliation, not new features: merged PR #10 (refresh 
 > 8.10; the Docker Compose quick start and the Dockerfile build image were never exercised on Boot 3.5; the
 > web portal has no runtime tests (CI only lints and builds it); the Render services were never provisioned.
 >
-> **What to do next:** (1) Watch for the contributor `Contributerr27`'s next pick (#28, #30, #31 are open; #26 and #29 are merged) and assign it. Ask the user about PR #14. Dependabot will re-propose Maven updates (for example Bucket4j); do not merge them without discussion. (2) Remaining launch work: Best Practices badge, the niche comparison, then the launch posts. Run `/handoff` before
+> **What to do next:** (1) Watch for the contributor `Contributerr27`'s next pick (only #30 and #32 are open; #26, #28, #29 and #31 are merged) and assign it; consider adding more good-first-issues. Ask the user about PR #14. Dependabot will re-propose Maven updates (for example Bucket4j); do not merge them without discussion. (2) Remaining launch work: Best Practices badge, the niche comparison, then the launch posts. Run `/handoff` before
 > stopping.
