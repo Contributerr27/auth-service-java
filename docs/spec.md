@@ -38,7 +38,7 @@ All other paths require `Authorization: Bearer <token>`.
 
 - Email normalised to `trim().toLowerCase()` in `AuthService`, not at DTO or DB layer.
 - JWT subject = user ID (Long as string); `email` is a custom claim.
-- `SecurityContext` principal = email string (not `UserDetails`).
+- `SecurityContext` principal = `AuthenticatedUser(userId, email)` (not `UserDetails`; see D-009 in `PROJECT_DECISIONS.md`).
 - `ResponseStatusException` thrown directly from service — no custom exception classes.
 - `UserDetailsService` is not implemented; Spring Security's user-loading contract is bypassed.
 
